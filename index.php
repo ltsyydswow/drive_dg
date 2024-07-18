@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-//从files.json加载数据;file_exists检查指定文件是否存在，创建一个空json数组然后写入文件
-//file_get_contents 读取文件
-//save_json  json_encode json将php数组data编码为格式化的json，然后写入
-
 function load_json($filename) {
     if (!file_exists($filename)) {
         file_put_contents($filename, json_encode([]));
@@ -20,7 +16,6 @@ function save_json($filename, $data) {
 $users_file = 'users.json';
 $files_file = 'files.json';
 
-//注册
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['register'])) {
         $username = $_POST['username'];
@@ -100,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 视口设置 -->
     <title>网盘</title>
     <style>
         body {
@@ -109,11 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 0;
         }
         .container {
-            width: 80%;
-            margin: 0 auto;
-            padding-top: 50px;
+            width: 100%; /* 宽度全屏 */
+            padding: 20px; /* 增加填充 */
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
         }
@@ -121,20 +116,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             margin-top: 20px;
         }
-        .form-container input[type="text"], .form-container input[type="password"] {
+        .form-container input[type="text"],
+        .form-container input[type="password"],
+        .form-container input[type="file"] {
+            width: calc(100% - 22px); /* 调整输入框宽度适应较小屏幕 */
             padding: 10px;
-            margin: 5px;
+            margin: 5px auto;
+            display: block;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         .form-container input[type="submit"] {
+            width: 100%; /* 全宽度提交按钮 */
+            margin-top: 10px;
             background-color: #f0ad4e;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-left: 10px;
         }
         .form-container input[type="submit"]:hover {
             background-color: #ec971f;
@@ -176,6 +176,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #ffdddd;
             padding: 10px;
             border-left: 6px solid #f44336;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px; 
+            }
+            .form-container input[type="text"],
+            .form-container input[type="password"],
+            .form-container input[type="file"] {
+                width: calc(100% - 12px); 
+                padding: 8px;
+                margin: 3px auto;
+            }
+            .form-container input[type="submit"] {
+                width: 100%; 
+                margin-top: 8px;
+            }
+            table {
+                overflow-x: auto; 
+            }
         }
     </style>
 </head>
